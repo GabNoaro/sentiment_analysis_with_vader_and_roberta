@@ -8,12 +8,12 @@ import tokenizer as tokenizer
 plt.style.use('ggplot')
 
 import nltk
-#Make sure to download the below packages
-#nltk.download('punkt')
-#nltk.download('averaged_perceptron_tagger')
-#nltk.download('maxent_ne_chunker')
-#nltk.download('words')
-#nltk.download('vader_lexicon')
+#Make sure to download the below packages. The comment the lines below, so you don't download those packages each time.
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+nltk.download('vader_lexicon')
 
 #Read the data
 df = pd.read_csv('Reviews.csv')
@@ -52,7 +52,6 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 #from nltk import sentiment as vader
 from tqdm.notebook import tqdm
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as sia
-#sia = vader.SentimentIntensityAnalyzer
 
 #Let's run a quick test
 sentences=['I am so happy!','This is the worst thing ever']
@@ -60,9 +59,6 @@ sid = sia()
 for sentence in sentences:
     ss = sid.polarity_scores(sentence)
 
-
-#ia.polarity_scores('I am so happy!')
-#sia.polarity_scores('This is the worst thing ever')
 
 #sia.polarity_scores(example)
 sentences=[example]
@@ -76,7 +72,6 @@ res = {}
 for i, row in tqdm(df.iterrows(), total=len(df)):
     texts = row['Text']
     myid = row['Id']
-    #res[myid] = sia.polarity_scores(texts)
     for text in texts:
         res[myid] = sid.polarity_scores(texts)
 
@@ -88,7 +83,6 @@ vaders = vaders.merge(df, how='left')
 vaders.head()
 
 #Let's plot the results
-#TO EDIT: Here, scores from 2 to 4 may need to have more weight if people tend to vote according to extremes
 ax = sns.barplot(data=vaders, x='Score', y='compound')
 ax.set_title('Compound Score by Amazon Star Review')
 plt.show()
@@ -145,7 +139,6 @@ for i, row in tqdm(df.iterrows(), total=len(df)):
         myid = row['Id']
         for text in texts:
             vader_result = sid.polarity_scores(texts)
-        #vader_result = sia.polarity_scores(text)
         vader_result_rename = {}
         for key, value in vader_result.items():
             vader_result_rename[f"vader_{key}"] = value
